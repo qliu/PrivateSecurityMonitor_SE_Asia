@@ -1,96 +1,39 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
  
-<title>Private Security Monitor</title>
+    <title>Private Security Monitor - South Asia</title>
  
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
-<![endif]-->
-<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
- 
-<script src="http://d3js.org/d3.v3.min.js"></script>
- 
-<style type="text/css">
-html, body { height: 100% }
-body {
-    margin: 0;
-    font-family: Helvetica, Arial, sans-serif; font-size: 12px;
-    overflow: hidden;
-}
-div {
- display: block;
-}
-#content-container {
-	min-width: 1200px;
-	width: 100%;
-	height: 100%;
-}
-
-#banner {
-	min-width: 1200px;
-	width: 100%;
-	height: 130px;
-	margin: 0px auto;
-	background-image: url(img/sie_center_logo.png), url(img/banner_right.png),-webkit-linear-gradient(top, #939b93 0%, #8a928a 100%);
-	background-position: 10% 0, 100% 0, 0 0;
-	background-repeat: no-repeat;
-	background-size: 247px 130px,491px 130px, 100% 100%;
-}
-
-#banner h1{
-	margin: 0px auto;
-	font-family: 'Freight Sans Bold','lucida grande',tahoma,verdana,arial,sans-serif;
-	font-size: 56px;
-	color: #252525;
-	margin-left: 30%;
-	padding-top: 30px;
-}
-#map 
-{ 
-	min-height: 840px;
-	min-width: 1200px;
-}
-.info {
-    padding: 15px 15px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-}
-.info h4 {
-    margin: 0 0 5px;
-    color: #777;
-}
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-</style>
- 
+    <!-- CSS -->
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+    <![endif]-->
+    <!-- My CSS -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    
+    <!-- JavaScript -->
+    <!-- Leaflet -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <!-- D3 -->
+    <script src="http://d3js.org/d3.v3.min.js"></script> 
 </head><body>
 
 <div id="banner">
-	<h1>Private Security Monitor</h1>
+	<h1>Private Security Monitor - South Asia</h1>
 </div> 
 <div id="content-container">
 <div id="map"></div>
 </div>
-<script type="text/javascript" src="data/world_countries.js"></script>
+<script type="text/javascript" src="data/seasia_countries.js"></script>
 <script type="text/javascript">
 // add base map
 var map = L.map('map');
-map.setView([23.5, 0], 3);
+map.setView([7, 115.64], 5);
 var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 17,
@@ -98,8 +41,8 @@ var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 });
 basemap.addTo(map);
 
-// add world countries
-L.geoJson(world_countries).addTo(map);
+// add Southeast Asia countries
+L.geoJson(seasia_countries).addTo(map);
 
 // attribute control
 var info = L.control();
@@ -112,21 +55,28 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Number of ICoC Signatory Company Headquarters 2013</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.icoc
+    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
+        '<b>' + props.country + '</b><br />' + props.sum_contractors
         : 'Hover over a country');
 };
 
 info.addTo(map);
 
 // set colors
+//function getColor(d) {
+//    return d > 100 ? '#800026' :
+//           d > 50  ? '#BD0026' :
+//           d > 40  ? '#E31A1C' :
+//           d > 30  ? '#FC4E2A' :
+//           d > 20   ? '#FD8D3C' :
+//           d > 10   ? '#FEB24C' :
+//           d > 0   ? '#FED976' :
+//                      null;
+//}
 function getColor(d) {
-    return d > 100 ? '#800026' :
-           d > 50  ? '#BD0026' :
-           d > 40  ? '#E31A1C' :
-           d > 30  ? '#FC4E2A' :
-           d > 20   ? '#FD8D3C' :
-           d > 10   ? '#FEB24C' :
+    return d > 10000 ? '#800026' :
+           d > 1000  ? '#E31A1C' :
+           d > 100   ? '#FD8D3C' :
            d > 0   ? '#FED976' :
                       null;
 }
@@ -134,7 +84,7 @@ function getColor(d) {
 // set style
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.icoc),
+        fillColor: getColor(feature.properties.sum_contractors),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -180,7 +130,7 @@ function onEachFeature(feature, layer) {
     });
 }
 
-geojson = L.geoJson(world_countries, {
+geojson = L.geoJson(seasia_countries, {
 	style: style,
 	onEachFeature: onEachFeature
 }).addTo(map);
@@ -191,7 +141,7 @@ var legend = L.control({position: 'bottomleft'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [1,10,20,30,40,50,100],
+        grades = [1,100,1000,10000],
         labels = [];
 
     // loop through value intervals and generate a label with a colored square for each interval
