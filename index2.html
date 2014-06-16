@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
+ 
+    <title>Private Security Monitor - South Asia</title>
+ 
+    <!-- CSS -->
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+    <![endif]-->
+    <!-- My CSS -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    
+    <!-- JavaScript -->
+    <!-- Leaflet -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <!-- D3 -->
+    <script src="http://d3js.org/d3.v3.min.js"></script> 
+</head><body>
+
+<div id="banner">
+	<h1>Private Security Monitor - South Asia</h1>
+</div> 
+<div id="content-container">
+<div id="map"></div>
+</div>
+<script type="text/javascript" src="data/seasia_countries.js"></script>
+<script type="text/javascript">
+// add base map
+var map = L.map('map',{worldCopyJump:true,});
+map.setView([7, 115.64], 5);
+map.worldCopyJump = true;
+var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+        attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        maxZoom: 17,
+		minZoom: 3,
+        noWrap: true,
+});
+basemap.addTo(map);
+
+// add Southeast Asia countries
+L.geoJson(seasia_countries).addTo(map);
+
+// attribute control
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+var popup = L.popup();
+
+// update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
+        '<b>' + props.country + '</b><br />' + props.sum_contractors
+        : 'Hover over a country');
+};
+
+info.addTo(map);
+
+// set colors
+//function getColor(d) {
+//    return d > 100 ? '#800026' :
+//           d > 50  ? '#BD0026' :
+//           d > 40  ? '#E31A1C' :
+//           d > 30  ? '#FC4E2A' :
+//           d > 20   ? '#FD8D3C' :
+//           d > 10   ? '#FEB24C' :
+//           d > 0   ? '#FED976' :
+//                      null;
+//}
+function getColor(d) {
+    return d > 10000 ? '#800026' :
+           d > 1000  ? '#E31A1C' :
+           d > 100   ? '#FD8D3C' :
+           d > 0   ? '#FED976' :
+                      null;
+}
+
+// set style
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.sum_contractors),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '0',
+        fillOpacity: 0.7
+    };
+}
+
+// add interaction
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 1,
+        color: '#999',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera) {
+        layer.bringToFront();
+    }
+	
+	info.update(layer.feature.properties);
+}
+
+var geojson;
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+	info.update();
+}
+
+//function zoomToFeature(e) {
+//    map.fitBounds(e.target.getBounds());
+//}
+
+// add popup on click
+function openPopup(e){
+    var layer = e.target;
+    var props = layer.feature.properties;
+    var popup_content = "<b>Country</b>: " + props.country + "</b><br />"
+                        + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
+                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
+                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
+                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
+                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
+
+    popup
+    .setLatLng(e.latlng)//get target feture object center: e.target.getBounds().getCenter()
+    .setContent(popup_content)
+    .openOn(map);
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: openPopup
+    });
+}
+
+geojson = L.geoJson(seasia_countries, {
+	style: style,
+	onEachFeature: onEachFeature
+}).addTo(map);
+
+// custom legend control
+var legend = L.control({position: 'bottomleft'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [1,100,1000,10000],
+        labels = [];
+
+    // loop through value intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + '&nbsp' + (grades[i + 1] ? '&ndash;' + '&nbsp'  + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
+</script>
+</body></html>

@@ -32,12 +32,13 @@
 <script type="text/javascript" src="data/seasia_countries.js"></script>
 <script type="text/javascript">
 // add base map
-var map = L.map('map');
+var map = L.map('map',{worldCopyJump:true,});
 map.setView([7, 115.64], 5);
+map.worldCopyJump = true;
 var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 17,
-		minZoom: 3
+		minZoom: 3,
 });
 basemap.addTo(map);
 
@@ -53,7 +54,9 @@ info.onAdd = function (map) {
     return this._div;
 };
 
-// method that we will use to update the control based on feature properties passed
+var popup = L.popup();
+
+// update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
         '<b>' + props.country + '</b><br />' + props.sum_contractors
@@ -118,15 +121,32 @@ function resetHighlight(e) {
 	info.update();
 }
 
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
+//function zoomToFeature(e) {
+//    map.fitBounds(e.target.getBounds());
+//}
+
+// add popup on click
+function openPopup(e){
+    var layer = e.target;
+    var props = layer.feature.properties;
+    var popup_content = "<b>Country</b>: " + props.country + "</b><br />"
+                        + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
+                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
+                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
+                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
+                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
+
+    popup
+    .setLatLng(e.latlng)//get target feture object center: e.target.getBounds().getCenter()
+    .setContent(popup_content)
+    .openOn(map);
 }
 
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: zoomToFeature
+        click: openPopup
     });
 }
 
