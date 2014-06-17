@@ -31,13 +31,14 @@
 </div>
 <script type="text/javascript" src="data/seasia_countries.js"></script>
 <script type="text/javascript">
+
 // add base map
 var map = L.map('map',{worldCopyJump:true,});
 map.setView([7, 115.64], 5);
 map.worldCopyJump = true;
-var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        maxZoom: 17,
+        maxZoom: 7,
 		minZoom: 3,
 });
 basemap.addTo(map);
