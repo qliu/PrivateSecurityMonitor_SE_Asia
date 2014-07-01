@@ -80,11 +80,41 @@ div {
     border-radius: 5px 5px 0 0;
 }
 
+#bottom-panel-content-container div.bottom-panel-text-container {
+    display: block;
+    height: 190px;
+    width: 15%;
+    margin: 10px 0;
+    padding-left: 20px;
+    padding-top: 20px;
+    float: left;
+}
+
+#bottom-panel-content-container div.bottom-panel-chart-container {
+    display: block;
+    height: 190px;
+    width: 40%;
+    margin: 10px 0;
+    float: left;
+}
+
+#bottom-panel-content-container div.bottom-chart-legend {
+    display: block;
+    height: 190px;
+    width: 20%;
+    margin: 10px 0;
+    float: left
+}
+
+#bottom-panel-content-container svg.bottom-chart-lengend-svg {
+    margin-top: 10px;
+}
+
 #bottom-panel-content-container div.bottom-chart {
     display: block;
     height: 190px;
-    width: 300px;
-    margin: 10px 30px;
+    width: 40%;
+    float: left
 }
 
 #map 
