@@ -1,11 +1,12 @@
-Brunei Darussalam,BN,0,AS,Private,0,0
-Indonesia,ID,38,"AO,AS,LOG,UMAT","Private,Government",2,1
-Cambodia,KH,125,"AO,AS,UMAT,UO","Private,Government",17,1
-Laos,LA,0,AS,Private,0,0
-Myanmar,MM,4000,"AO,AS","Private,Separatist nationals",0,0
-Malaysia,MY,30289,"AO,AS, Armed Escort,UMAT",Government,2,5
-Philippines,PH,215,"AO,AS,CP,LOG,PAT","Private,Government",2,3
-Singapore,SG,9085,"AO,AS,Armed Escort,CP,LOG,PAT,UMAT,Unclear","Private,Government",0,0
-Thailand,TH,0,"AO,AS",,0,0
-Timor-Leste,TL,0,"AO,AS","private,Peacekeeping organizations",0,0
-Vietnam,VN,1,"UMAT, Recruitment",Government,0,0
+World,world,43753,"AO,AS,Armed Escort,CP,LOG,PAT,Recruitment,UMAT,UO,Unclear","Government,Private,Peacekeeping Organizations,Separatist Nationals",23,10,12,2,8,3,37,0,4,3,0,3,2,13,20,2,23
+Brunei Darussalam,BN,0,AS,Private,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0
+Indonesia,ID,38,"AO,AS,LOG,UMAT","Private,Government",2,1,1,0,4,1,5,0,0,0,0,0,0,1,4,0,3
+Cambodia,KH,125,"AO,AS,UMAT,UO","Private,Government",17,1,2,2,1,0,3,0,0,0,0,0,0,2,2,0,2
+Laos,LA,0,AS,Private,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0
+Myanmar,MM,4000,"AO,AS","Private,Separatist nationals",0,0,3,0,0,0,3,0,0,0,0,0,0,1,5,1,0
+Malaysia,MY,30289,"AO,AS, Armed Escort,UMAT",Government,2,5,1,0,1,0,7,0,0,0,0,1,1,1,0,0,8
+Philippines,PH,215,"AO,AS,CP,LOG,PAT","Private,Government",2,3,1,0,0,1,8,0,1,1,0,0,0,4,5,0,1
+Singapore,SG,9085,"AO,AS,Armed Escort,CP,LOG,PAT,UMAT,Unclear","Private,Government",0,0,2,0,1,1,5,0,3,2,0,1,1,2,1,0,6
+Thailand,TH,0,"AO,AS",,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,2
+Timor-Leste,TL,0,"AO,AS","private,Peacekeeping organizations",0,0,1,0,0,0,3,0,0,0,0,0,0,1,1,1,1
+Vietnam,VN,1,"UMAT, Recruitment",Government,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0
