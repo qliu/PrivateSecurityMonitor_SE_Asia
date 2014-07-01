@@ -8,7 +8,7 @@
  
     <!-- CSS -->
     <!-- Leaflet -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
@@ -28,7 +28,9 @@
     <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
     <script src="assets/js/L.Control.ZoomMin.js"></script>
     <!-- D3 -->
-    <script src="http://d3js.org/d3.v3.min.js"></script> 
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- D3 Pie -->
+    <script src="assets/js/d3pie.min.js"></script>
 </head><body>
 
 <div id="banner">
@@ -37,13 +39,14 @@
 <div id="content-container">
 <div id="map"></div>
 <div id="bottom-panel">
-    <input id="toggle-bottom-panel-button" type="button" value="bottom panel" title="Open Bottom Panel">
+    <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
     <div id="bottom-panel-content-container">
-        <p>Bottom Panel Goes Here</p>
+        <div id="pieChart1" class="bottom-chart"></div>
     </div>
 </div>
 </div>
 <script type="text/javascript" src="data/seasia_countries.js"></script>
+<script type="text/javascript" src="data/chart1.js"></script>
 <script type="text/javascript">
 // add base map
 var map = L.map('map',{worldCopyJump:true,zoomControl:false});
@@ -51,7 +54,7 @@ map.setView([7, 115.64], 5);
 map.worldCopyJump = true;
 var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        maxZoom: 17,
+        maxZoom: 7,
 		minZoom: 3
 });
 basemap.addTo(map);
@@ -117,27 +120,138 @@ function style(feature) {
 var lastClickedLayer; // record last clicekd layer
 var geojson;
 
+var pie1
+
+// D3 charts
+function initPieChart(pieChartID){
+    var pieData;
+    var featureID;
+    if (lastClickedLayer)
+    {featureID = lastClickedLayer.feature.id;}
+    else
+    {featureID = "world";}
+    chart1Data.forEach(function(d){
+        if (d["id"] === featureID)
+        {
+            pieData = d["data"];
+        }
+    });
+    if (pie1)
+    {pie1.destroy();pie1=null;}
+    pie1 = new d3pie(pieChartID, {
+        "header": {
+            "title": {
+                "text": "Type of Clients",
+                "fontSize": 16,
+                "font": "verdana"
+            },
+            "subtitle": {
+                "color": "#999999",
+                "fontSize": 10,
+                "font": "verdana"
+            },
+            "titleSubtitlePadding": 20
+        },
+        "footer": {
+            "color": "#999999",
+            "fontSize": 11,
+            "font": "open sans",
+            "location": "bottom-center"
+        },
+        "size": {
+            "canvasHeight": 180,
+            "canvasWidth": 290,
+            "pieInnerRadius": "26%",
+            "pieOuterRadius": "90%"
+        },
+        "data": {
+            "content": pieData
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 10
+            },
+            "mainLabel": {
+                "font": "verdana"
+            },
+            "percentage": {
+                "color": "#e1e1e1",
+                "font": "verdana",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#e1e1e1",
+                "font": "verdana"
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "misc": {
+            "gradient": {
+                "enabled": true,
+                "percentage": 90,
+                "color": "#827d7d"
+            },
+            "canvasPadding": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+            }
+        }
+    });
+}
+
+
+// Toggle bottom panel
+$('#toggle-bottom-panel-button').click(function(){
+    $('#toggle-bottom-panel-button').toggleClass("collapse","slow");
+    $('#bottom-panel-content-container').slideToggle("slow");
+    // Initial Pie Chart
+    initPieChart("pieChart1");
+    
+});
+
+// Open Bottom Panel
+function openBottomPanel(){
+    $('#toggle-bottom-panel-button').addClass("collapse","slow");
+    $('#bottom-panel-content-container').slideDown("slow");
+    // Initial Pie Chart
+    initPieChart("pieChart1");
+}
+
 // add interaction
 function highlightFeature(e) {
+    // Highlight clicked feature
     var layer = e.target;
-    
     // reset style of last clicked layer
     if (lastClickedLayer){
         geojson.resetStyle(lastClickedLayer);
     }
-
     layer.setStyle({
         weight: 1,
         color: '#999',
         dashArray: '',
         fillOpacity: 0.7
     });
-
+    // trick for IE
     if (!L.Browser.ie && !L.Browser.opera) {
         layer.bringToFront();
     }
-	
 	lastClickedLayer = layer
+    
+    // Center to clicekd feature
+    map.setView(e.target.getBounds().getCenter(),5);
+//    map.fitBounds(e.target.getBounds());
+
+    // Open bottom panel
+    openBottomPanel();
+
 //	info.update(layer.feature.properties);
 }
 
@@ -159,13 +273,13 @@ function openPopup(e){
                         + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
 //                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
 //                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
-                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
-                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
+//                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
+//                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
 
     var popupLatLng = L.latLng(e.latlng.lat+0.1,e.latlng.lng+0.1);
 
     popup
-    .setLatLng(popupLatLng)//get target feture object center: e.target.getBounds().getCenter()
+    .setLatLng(popupLatLng)
     .setContent(popup_content)
     .openOn(map);   
 }
@@ -204,11 +318,5 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
-
-// bottom panel
-$('#toggle-bottom-panel-button').click(function(){
-    $('#toggle-bottom-panel-button').toggleClass("collapse",1000);
-    $('#bottom-panel-content-container').slideToggle("slow");
-});
 </script>
 </body></html>

@@ -21,11 +21,11 @@ div {
 	width: 100%;
     min-height: 100px;
 	height: 10%;
-	margin: 0px auto;
+	margin: 0px auto;    
 	background-image: url(../images/sie_center_logo.png), -webkit-linear-gradient(top, #333 0%, #8a928a 100%);
-	background-position: 10% 50%, 0 0;
+	background-position: 10% 55%, 0 0;
 	background-repeat: no-repeat;
-	background-size: 170px 90px,100% 100%;
+	background-size: 150px 75px,100% 100%;
 }
 
 #banner h1{
@@ -41,31 +41,50 @@ div {
 #toggle-bottom-panel-button{
     display: block;
     position: absolute;
-    bottom: 0px;
-    right: 50%;
+    bottom: -1%;
+    left: 50%;
     height: 30px;
-    width: 100px;
+    width: 41px;
     cursor: pointer;
     z-index: 0;
+    background: #fff url(../images/icon_arrow_grey_up.png) no-repeat scroll center center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+    border: 1px solid #888;
+    border-radius: 5px 5px 0 0;
 }
 
 #toggle-bottom-panel-button.collapse{
     display: block;
     position: absolute;
-    bottom: 10%;
-    right: 50%;
+    bottom: 20%;
+    left: 50%;
     height: 30px;
-    width: 100px;
+    width: 41px;
     cursor: pointer;
     z-index: 0;
+    background: #fff url(../images/icon_arrow_grey_down.png) no-repeat scroll center center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+    border: 1px solid #888;
+    border-radius: 5px 5px 0 0;
 }
 
 #bottom-panel-content-container{
     display: none;
     position: absolute;
-    bottom: 0px;
-    height: 10%;
+    bottom: -1%;
+    height: 21%;
     width: 100%;
+    background-color:white;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+    border: 1px solid #888;
+    border-radius: 5px 5px 0 0;
+}
+
+#bottom-panel-content-container div.bottom-chart {
+    display: block;
+    height: 190px;
+    width: 300px;
+    margin: 10px 30px;
 }
 
 #map 

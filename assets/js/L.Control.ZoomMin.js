@@ -1,3 +1,7 @@
+var maxZoom = 7;
+var minZoom = 3;
+var defaultZoom = 5;
+
 L.Control.ZoomMin = L.Control.Zoom.extend({
   options: {
     position: "topleft",
@@ -44,16 +48,16 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
     L.DomUtil.removeClass(this._zoomOutButton, className)
     L.DomUtil.removeClass(this._zoomMinButton, className)
 
-    if (map._zoom === map.getMinZoom()) {
+    if (map._zoom === minZoom) {
       L.DomUtil.addClass(this._zoomOutButton, className)
     }
 
-    if (map._zoom === map.getMaxZoom()) {
+    if (map._zoom === maxZoom) {
       L.DomUtil.addClass(this._zoomInButton, className)
     }
 
-    if (map._zoom === map.getMinZoom()) {
-      L.DomUtil.addClass(this._zoomMinButton, className)
-    }
+//    if (map._zoom === defaultZoom) {
+//      L.DomUtil.addClass(this._zoomMinButton, className)
+//    }
   }
 })
