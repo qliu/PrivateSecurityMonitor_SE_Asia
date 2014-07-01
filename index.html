@@ -17,8 +17,16 @@
     <link rel="stylesheet" href="assets/css/base.css">
     
     <!-- JavaScript -->
+    <!-- JQuery 1.11-->
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <script src="assets/js/jquery-ui.min.js"></script>
     <!-- Leaflet -->
     <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <!-- Leaflet Custom Controls -->
+    <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
+    <script src="assets/js/L.Control.ZoomMin.js"></script>
     <!-- D3 -->
     <script src="http://d3js.org/d3.v3.min.js"></script> 
 </head><body>
@@ -28,42 +36,52 @@
 </div> 
 <div id="content-container">
 <div id="map"></div>
+<div id="bottom-panel">
+    <input id="toggle-bottom-panel-button" type="button" value="bottom panel" title="Open Bottom Panel">
+    <div id="bottom-panel-content-container">
+        <p>Bottom Panel Goes Here</p>
+    </div>
+</div>
 </div>
 <script type="text/javascript" src="data/seasia_countries.js"></script>
 <script type="text/javascript">
 // add base map
-var map = L.map('map',{worldCopyJump:true,});
+var map = L.map('map',{worldCopyJump:true,zoomControl:false});
 map.setView([7, 115.64], 5);
 map.worldCopyJump = true;
-var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 17,
-		minZoom: 3,
+		minZoom: 3
 });
 basemap.addTo(map);
+
+// add custom zoom control
+map.addControl(new L.Control.ZoomMin());
 
 // add Southeast Asia countries
 L.geoJson(seasia_countries).addTo(map);
 
-// attribute control
-var info = L.control();
+// Conrols
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+// info window
+//var info = L.control();
+//info.onAdd = function (map) {
+//    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+//    this.update();
+//    return this._div;
+//};
 
+// pop-up window
 var popup = L.popup();
 
 // update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
-        '<b>' + props.country + '</b><br />' + props.sum_contractors
-        : 'Hover over a country');
-};
-
-info.addTo(map);
+//info.update = function (props) {
+//    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
+//        '<b>' + props.country + '</b><br />' + props.sum_contractors
+//        : 'Hover over a country');
+//};
+//info.addTo(map);
 
 // set colors
 //function getColor(d) {
@@ -96,9 +114,17 @@ function style(feature) {
     };
 }
 
+var lastClickedLayer; // record last clicekd layer
+var geojson;
+
 // add interaction
 function highlightFeature(e) {
     var layer = e.target;
+    
+    // reset style of last clicked layer
+    if (lastClickedLayer){
+        geojson.resetStyle(lastClickedLayer);
+    }
 
     layer.setStyle({
         weight: 1,
@@ -111,42 +137,44 @@ function highlightFeature(e) {
         layer.bringToFront();
     }
 	
-	info.update(layer.feature.properties);
+	lastClickedLayer = layer
+//	info.update(layer.feature.properties);
 }
-
-var geojson;
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
-	info.update();
+//	info.update();
 }
 
 //function zoomToFeature(e) {
 //    map.fitBounds(e.target.getBounds());
 //}
 
-// add popup on click
+// add popup on hover
 function openPopup(e){
     var layer = e.target;
+    
     var props = layer.feature.properties;
     var popup_content = "<b>Country</b>: " + props.country + "</b><br />"
                         + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
-                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
-                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
+//                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
+//                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
                         + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
                         + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
 
+    var popupLatLng = L.latLng(e.latlng.lat+0.1,e.latlng.lng+0.1);
+
     popup
-    .setLatLng(e.latlng)//get target feture object center: e.target.getBounds().getCenter()
+    .setLatLng(popupLatLng)//get target feture object center: e.target.getBounds().getCenter()
     .setContent(popup_content)
-    .openOn(map);
+    .openOn(map);   
 }
 
 function onEachFeature(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: openPopup
+//        mouseover: openPopup,
+//        mouseout: resetHighlight,
+        click: highlightFeature
     });
 }
 
@@ -156,7 +184,8 @@ geojson = L.geoJson(seasia_countries, {
 }).addTo(map);
 
 // custom legend control
-var legend = L.control({position: 'bottomleft'});
+//var legend = L.control({position: 'bottomleft'});
+var legend = L.control({position: 'topright'});
 
 legend.onAdd = function (map) {
 
@@ -175,5 +204,11 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+// bottom panel
+$('#toggle-bottom-panel-button').click(function(){
+    $('#toggle-bottom-panel-button').toggleClass("collapse",1000);
+    $('#bottom-panel-content-container').slideToggle("slow");
+});
 </script>
 </body></html>

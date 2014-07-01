@@ -37,6 +37,37 @@ div {
 	margin-left: 30%;
 	padding-top: 20px;
 }
+
+#toggle-bottom-panel-button{
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 50%;
+    height: 30px;
+    width: 100px;
+    cursor: pointer;
+    z-index: 0;
+}
+
+#toggle-bottom-panel-button.collapse{
+    display: block;
+    position: absolute;
+    bottom: 10%;
+    right: 50%;
+    height: 30px;
+    width: 100px;
+    cursor: pointer;
+    z-index: 0;
+}
+
+#bottom-panel-content-container{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    height: 10%;
+    width: 100%;
+}
+
 #map 
 { 
 
