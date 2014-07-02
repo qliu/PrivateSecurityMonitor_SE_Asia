@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
  
-    <title>Private Security Monitor - South Asia</title>
+    <title>Private Security Monitor - Southeast Asia</title>
  
     <!-- CSS -->
     <!-- Leaflet -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
@@ -17,54 +17,121 @@
     <link rel="stylesheet" href="assets/css/base.css">
     
     <!-- JavaScript -->
+    <!-- JQuery 1.11-->
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <script src="assets/js/jquery-ui.min.js"></script>
     <!-- Leaflet -->
     <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <!-- Leaflet Custom Controls -->
+    <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
+    <script src="assets/js/L.Control.ZoomMin.js"></script>
     <!-- D3 -->
-    <script src="http://d3js.org/d3.v3.min.js"></script> 
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- D3 Pie -->
+    <script src="assets/js/d3pie.min.js"></script>
 </head><body>
 
 <div id="banner">
-	<h1>Private Security Monitor - South Asia</h1>
+	<h1>Private Security Monitor - Southeast Asia</h1>
 </div> 
 <div id="content-container">
 <div id="map"></div>
+<div id="bottom-panel">
+    <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
+    <div id="bottom-panel-content-container">
+        <div id="bottomChartTextContainer" class="bottom-panel-text-container"></div>        
+        <div id="chartContainer1" class="bottom-panel-chart-container">
+            <div id="pieChart1Legend" class="bottom-chart-legend">
+                <text id="p14_title" class="p14_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Clients</text>
+                <svg class="bottom-chart-lengend-svg">
+                    <text x="30" y="20" dy=".1em">Government</text>
+                    <rect width="16" height="12" x="10" y="10" style="fill:#994040;"></rect>
+                    <text x="30" y="40" dy=".1em">Private</text>
+                    <rect width="16" height="12" x="10" y="30" style="fill:#9b8050;"></rect>
+                    <text x="30" y="60" dy=".1em">Other</text>
+                    <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"></rect>
+                    <text x="30" y="80" dy=".1em">No Data</text>
+                    <rect width="16" height="12" x="10" y="70" style="fill:#7f7f77;"></rect>
+                </svg>
+            </div>
+            <div id="pieChart1" class="bottom-chart"></div>
+        </div>
+        <div id="chartContainer2" class="bottom-panel-chart-container">
+            <div id="pieChart1Legend" class="bottom-chart-legend">
+                <text id="p15_title" class="p15_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Services</text>
+                <svg class="bottom-chart-lengend-svg">
+                    <text x="35" y="20" dy=".1em">AO</text>
+                    <rect width="16" height="12" x="10" y="10" style="fill:#994040;"><title>Armed Operational Support</title></rect>
+                    <text x="35" y="40" dy=".1em">UO</text>
+                    <rect width="16" height="12" x="10" y="30" style="fill:#949645;"><title>Unarmed Operational Support on the Battlefield</title></rect>
+                    <text x="35" y="60" dy=".1em">UMAT</text>
+                    <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"><title>Unarmed Military Advice and Training</title></rect>
+                    <text x="35" y="80" dy=".1em">LOG</text>
+                    <rect width="16" height="12" x="10" y="70" style="fill:#6b9944;"><title>Logistical Support</title></rect>
+                    <text x="35" y="100" dy=".1em">AS</text>
+                    <rect width="16" height="12" x="10" y="90" style="fill:#459654;"><title>Armed Site Security</title></rect>
+                    <text x="105" y="20" dy=".1em">US</text>
+                    <rect width="16" height="12" x="80" y="10" style="fill:#3c846f;"><title>Unarmed Site Security</title></rect>
+                    <text x="105" y="40" dy=".1em">PAT</text>
+                    <rect width="16" height="12" x="80" y="30" style="fill:#47849e;"><title>Police Advice and Training</title></rect>
+                    <text x="105" y="60" dy=".1em">CP</text>
+                    <rect width="16" height="12" x="80" y="50" style="fill:#597ab7;"><title>Crime Prevention</title></rect>
+                    <text x="105" y="80" dy=".1em">ITG</text>
+                    <rect width="16" height="12" x="80" y="70" style="fill:#5f4699;"><title>Intelligence</title></rect>
+                    <text x="105" y="100" dy=".1em">Other</text>
+                    <rect width="16" height="12" x="80" y="90" style="fill:#96459b;"><title>Other</title></rect>
+                    <text x="35" y="120" dy=".1em">No Data</text>
+                    <rect width="16" height="12" x="10" y="110" style="fill:#7f7f77;"><title>No Data</title></rect>
+                </svg>                
+            </div>
+            <div id="pieChart2" class="bottom-chart"></div>
+        </div>
+    </div>
+</div>
 </div>
 <script type="text/javascript" src="data/seasia_countries.js"></script>
+<script type="text/javascript" src="data/chart1.js"></script>
 <script type="text/javascript">
 
 // add base map
-var map = L.map('map',{worldCopyJump:true,});
+var map = L.map('map',{worldCopyJump:true,zoomControl:false});
 map.setView([7, 115.64], 5);
 map.worldCopyJump = true;
 var basemap = L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
         attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 7,
-		minZoom: 3,
+		minZoom: 3
 });
 basemap.addTo(map);
+
+// add custom zoom control
+map.addControl(new L.Control.ZoomMin());
 
 // add Southeast Asia countries
 L.geoJson(seasia_countries).addTo(map);
 
-// attribute control
-var info = L.control();
+// Conrols
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+// info window
+//var info = L.control();
+//info.onAdd = function (map) {
+//    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+//    this.update();
+//    return this._div;
+//};
 
+// pop-up window
 var popup = L.popup();
 
 // update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
-        '<b>' + props.country + '</b><br />' + props.sum_contractors
-        : 'Hover over a country');
-};
-
-info.addTo(map);
+//info.update = function (props) {
+//    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
+//        '<b>' + props.country + '</b><br />' + props.sum_contractors
+//        : 'Hover over a country');
+//};
+//info.addTo(map);
 
 // set colors
 //function getColor(d) {
@@ -97,57 +164,365 @@ function style(feature) {
     };
 }
 
+var lastClickedLayer; // record last clicekd layer
+var geojson;
+
+var worldProperties
+var pie1
+var pie2
+
+// D3 charts
+function initPieChart(){
+    var pie1Data;
+    var chart1Data;
+    var pie2Data;
+    var chart2Data;
+    var featureProperties;
+    if (lastClickedLayer)
+    {
+        featureProperties = lastClickedLayer.feature.properties;
+    }
+    else
+    {
+        featureProperties = seasia_countries["features"][0]["properties"]
+        worldProperties = featureProperties
+    }
+    
+    // Bottom Panel Text
+    var textContent = "<p><b>Country</b>: " + featureProperties.country + "</b></p>"
+                    + "<p><b>Number of Contractors</b>: " + featureProperties.sum_contractors + "</b></p>"
+//                    + "<p><b>Types of Services</b>: " + featureProperties.types_of_services + "</b></p>"
+//                    + "<p><b>Types of Clients</b>: " + featureProperties.types_of_clients + "</b></p>"
+                    + "<p><b>Total Deaths</b>: " + featureProperties.deaths + "</b></p>"
+                    + "<p><b>Total Injuries</b>: " + featureProperties.injuries + "</b></p>"
+    $('#bottomChartTextContainer').html(textContent);
+    
+    // Pie Chart 1 - Type of Clients
+    chart1Data = 
+    {
+        "Private": featureProperties["toc_private"],
+        "Government": featureProperties["toc_government"],
+        "Other": featureProperties["toc_other"],
+        "NoData": featureProperties["toc_nodata"]
+    }
+    pie1Data = 
+    [
+        {
+            "label": "Private",
+            "value": chart1Data["Private"],
+            "color": "#994040"
+        },
+        {
+            "label": "Government",
+            "value": chart1Data["Government"],
+            "color": "#9b8050"
+        },
+        {
+            "label": "Other",
+            "value": chart1Data["Other"],
+            "color": "#6d9b45"
+        },
+        {
+            "label": "No Data",
+            "value": chart1Data["NoData"],
+            "color": "#7f7f77"
+        }
+    ]
+    if (pie1)
+    {pie1.destroy();pie1=null;}
+    pie1 = new d3pie("pieChart1", {
+        "header": {
+            "title": {
+                "text": "",
+                "fontSize": 16,
+                "font": "verdana"
+            },
+            "subtitle": {
+                "color": "#999999",
+                "fontSize": 10,
+                "font": "verdana"
+            },
+            "titleSubtitlePadding": 20
+        },
+        "footer": {
+            "color": "#999999",
+            "fontSize": 11,
+            "font": "open sans",
+            "location": "bottom-center"
+        },
+        "size": {
+            "canvasHeight": 180,
+            "canvasWidth": 300,
+            "pieInnerRadius": "26%",
+            "pieOuterRadius": "90%"
+        },
+        "data": {
+            "content": pie1Data
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 10
+            },
+            "mainLabel": {
+                "font": "verdana"
+            },
+            "percentage": {
+                "color": "#e1e1e1",
+                "font": "verdana",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#e1e1e1",
+                "font": "verdana"
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "misc": {
+            "gradient": {
+                "enabled": true,
+                "percentage": 90,
+                "color": "#827d7d"
+            },
+            "canvasPadding": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+            }
+        }
+    });
+    // Pie Chart 2 - Type of Services
+    chart2Data =
+    {
+        "AO": featureProperties["tos_ao"],
+        "UO": featureProperties["tos_uo"],
+        "UMAT": featureProperties["tos_umat"],
+        "LOG": featureProperties["tos_log"],
+        "AS": featureProperties["tos_as"],
+        "US": featureProperties["tos_us"],
+        "PAT": featureProperties["tos_pat"],
+        "CP": featureProperties["tos_cp"],
+        "ITG": featureProperties["tos_itg"],
+        "Other": featureProperties["tos_other"],
+        "NoData": featureProperties["tos_nodata"],
+    }
+    pie2Data = 
+    [
+        {
+            "label": "AO",
+            "value": chart2Data["AO"],
+            "color": "#994040"
+        },
+        {
+            "label": "UO",
+            "value": chart2Data["UO"],
+            "color": "#9b8050"
+        },
+        {
+            "label": "UMAT",
+            "value": chart2Data["UMAT"],
+            "color": "#949645"
+        },
+        {
+            "label": "LOG",
+            "value": chart2Data["LOG"],
+            "color": "#6b9944"
+        },
+        {
+            "label": "AS",
+            "value": chart2Data["AS"],
+            "color": "#459654"
+        },
+        {
+            "label": "US",
+            "value": chart2Data["US"],
+            "color": "#3c846f"
+        },
+        {
+            "label": "PAT",
+            "value": chart2Data["PAT"],
+            "color": "#47849e"
+        },
+        {
+            "label": "CP",
+            "value": chart2Data["CP"],
+            "color": "#597ab7"
+        },
+        {
+            "label": "ITG",
+            "value": chart2Data["ITG"],
+            "color": "#5f4699"
+        },
+        {
+            "label": "Other",
+            "value": chart2Data["Other"],
+            "color": "#96459b"
+        },
+        {
+            "label": "No Data",
+            "value": chart2Data["NoData"],
+            "color": "#7f7f77"
+        }        
+    ]          
+    if (pie2)
+    {pie2.destroy();pie2=null;}
+    pie2 = new d3pie("pieChart2", {
+        "header": {
+            "title": {
+                "text": "",
+                "fontSize": 16,
+                "font": "verdana"
+            },
+            "subtitle": {
+                "color": "#999999",
+                "fontSize": 10,
+                "font": "verdana"
+            },
+            "titleSubtitlePadding": 20
+        },
+        "footer": {
+            "color": "#999999",
+            "fontSize": 11,
+            "font": "open sans",
+            "location": "bottom-center"
+        },
+        "size": {
+            "canvasHeight": 180,
+            "canvasWidth": 300,
+            "pieInnerRadius": "26%",
+            "pieOuterRadius": "90%"
+        },
+        "data": {
+            "content": pie2Data
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 10
+            },
+            "mainLabel": {
+                "font": "verdana"
+            },
+            "percentage": {
+                "color": "#e1e1e1",
+                "font": "verdana",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#e1e1e1",
+                "font": "verdana"
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "misc": {
+            "gradient": {
+                "enabled": true,
+                "percentage": 90,
+                "color": "#827d7d"
+            },
+            "canvasPadding": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+            }
+        }
+    });
+}
+
+
+// Toggle bottom panel
+$('#toggle-bottom-panel-button').click(function(){
+    $('#toggle-bottom-panel-button').toggleClass("collapse","slow");
+    $('#bottom-panel-content-container').slideToggle("slow");
+    // Initial Pie Chart
+    initPieChart();
+    
+});
+
+// Open Bottom Panel
+function openBottomPanel(){
+    $('#toggle-bottom-panel-button').addClass("collapse","slow");
+    $('#bottom-panel-content-container').slideDown("slow");
+    // Initial Pie Chart
+    initPieChart();
+}
+
 // add interaction
 function highlightFeature(e) {
+    // Highlight clicked feature
     var layer = e.target;
-
+    // reset style of last clicked layer
+    if (lastClickedLayer){
+        geojson.resetStyle(lastClickedLayer);
+    }
     layer.setStyle({
         weight: 1,
         color: '#999',
         dashArray: '',
         fillOpacity: 0.7
     });
-
+    // trick for IE
     if (!L.Browser.ie && !L.Browser.opera) {
         layer.bringToFront();
     }
-	
-	info.update(layer.feature.properties);
-}
+	lastClickedLayer = layer
+    
+    // Center to clicekd feature
+    map.setView(e.target.getBounds().getCenter(),5);
+//    map.fitBounds(e.target.getBounds());
 
-var geojson;
+    // Open bottom panel
+    openBottomPanel();
+
+//	info.update(layer.feature.properties);
+}
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
-	info.update();
+//	info.update();
 }
 
 //function zoomToFeature(e) {
 //    map.fitBounds(e.target.getBounds());
 //}
 
-// add popup on click
+// add popup on hover
 function openPopup(e){
     var layer = e.target;
+    
     var props = layer.feature.properties;
     var popup_content = "<b>Country</b>: " + props.country + "</b><br />"
                         + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
-                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
-                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
-                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
-                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
+//                        + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
+//                        + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
+//                        + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
+//                        + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
+
+    var popupLatLng = L.latLng(e.latlng.lat+0.1,e.latlng.lng+0.1);
 
     popup
-    .setLatLng(e.latlng)//get target feture object center: e.target.getBounds().getCenter()
+    .setLatLng(popupLatLng)
     .setContent(popup_content)
-    .openOn(map);
+    .openOn(map);   
 }
 
 function onEachFeature(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: openPopup
+//        mouseover: openPopup,
+//        mouseout: resetHighlight,
+        click: highlightFeature
     });
 }
 
@@ -157,7 +532,8 @@ geojson = L.geoJson(seasia_countries, {
 }).addTo(map);
 
 // custom legend control
-var legend = L.control({position: 'bottomleft'});
+//var legend = L.control({position: 'bottomleft'});
+var legend = L.control({position: 'topright'});
 
 legend.onAdd = function (map) {
 
