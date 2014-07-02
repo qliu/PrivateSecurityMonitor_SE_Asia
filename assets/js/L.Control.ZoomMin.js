@@ -38,6 +38,9 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
   _zoomMin: function () {
 //    this._map.setZoom(this._map.getMinZoom());
     this._map.setView([7, 115.64], 5); // Reset Map View to default
+    geojson.resetStyle(lastClickedLayer);
+    lastClickedLayer = null; // Clear last clicked layer
+    initPieChart(); // Reset pie charts in bottom panel
   },
 
   _updateDisabled: function () {
