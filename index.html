@@ -24,6 +24,11 @@
 <div id="map"></div>
 <div id="bottom-panel">
     <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
+    <!-- tooltip for pie chart -->
+    <div id="tooltip" class="hidden">
+        <p><span id="tooltip-value">100</span>%</p>
+    </div>
+    <!-- bottom panel content -->
     <div id="bottom-panel-content-container">
         <div id="bottomChartTextContainer" class="bottom-panel-text-container"></div>        
         <div id="chartContainer1" class="bottom-panel-chart-container">
@@ -116,23 +121,22 @@ L.geoJson(seasia_countries).addTo(map);
 // Conrols
 
 // info window
-//var info = L.control();
-//info.onAdd = function (map) {
-//    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-//    this.update();
-//    return this._div;
-//};
+var info = L.control();
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
 
 // pop-up window
 var popup = L.popup();
 
 // update the control based on feature properties passed
-//info.update = function (props) {
-//    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
-//        '<b>' + props.country + '</b><br />' + props.sum_contractors
-//        : 'Hover over a country');
-//};
-//info.addTo(map);
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Number of Contractors</h4>' +  (props ?
+        '<b>' + props.country + '</b><br />' + props.sum_contractors
+        : 'Hover over a country');
+};
 
 // set colors
 //function getColor(d) {
@@ -168,7 +172,6 @@ function style(feature) {
 var lastClickedLayer; // record last clicekd layer
 var geojson;
 
-var worldProperties
 var pie1
 var pie2
 
@@ -186,7 +189,6 @@ function initPieChart(){
     else
     {
         featureProperties = seasia_countries["features"][0]["properties"]
-        worldProperties = featureProperties
     }
     
     // Bottom Panel Text
@@ -199,13 +201,19 @@ function initPieChart(){
     $('#bottomChartTextContainer').html(textContent);
     
     // Pie Chart 1 - Type of Clients
+    var tocPrivate=0, tocGovernment=0, tocOther=0, tocNoData=0; tocSum = 0;
+    if (featureProperties["toc_private"]) {tocPrivate = featureProperties["toc_private"];}
+    if (featureProperties["toc_government"]) {tocGovernment = featureProperties["toc_government"];}
+    if (featureProperties["toc_other"]) {tocOther = featureProperties["toc_other"];}
+    if (featureProperties["toc_nodata"]) {tocNoData = featureProperties["toc_nodata"];}
+    tocSum = tocPrivate+tocGovernment+tocOther+tocNoData;
     chart1Data = 
     {
-        "Private": featureProperties["toc_private"],
-        "Government": featureProperties["toc_government"],
-        "Other": featureProperties["toc_other"],
-        "NoData": featureProperties["toc_nodata"]
-    }
+        "Private": tocPrivate,
+        "Government": tocGovernment,
+        "Other": tocOther,
+        "NoData": tocNoData
+    };
     pie1Data = 
     [
         {
@@ -228,7 +236,7 @@ function initPieChart(){
             "value": chart1Data["NoData"],
             "color": "#7f7f77"
         }
-    ]
+    ];
     if (pie1)
     {pie1.destroy();pie1=null;}
     pie1 = new d3pie("pieChart1", {
@@ -264,6 +272,9 @@ function initPieChart(){
             "outer": {
                 "pieDistance": 10
             },
+            "inner": {
+                "hideWhenLessThanPercentage": 10
+            },
             "mainLabel": {
                 "font": "verdana"
             },
@@ -296,9 +307,39 @@ function initPieChart(){
                 "bottom": 0,
                 "left": 0
             }
+        },
+        "callbacks":{
+            onMouseoverSegment: function(info){
+                var left = $("#"+info.segment.id).offset().left+$("#"+info.segment.id).width()/2;
+                var top = $("#"+info.segment.id).offset().top+$("#"+info.segment.id).height()/2;
+                var labelText = Math.round(info.data.value/tocSum*100);
+                d3.select("#tooltip")
+                    .style("left",left+"px")
+                    .style("top",top+"px")
+                    .style("opacity",1)
+                    .select("#tooltip-value")
+                    .text(labelText);
+            },
+            onMouseoutSegment: function(){
+                d3.select("#tooltip").style("opacity",0);
+            }
         }
     });
     // Pie Chart 2 - Type of Services
+    var tosAO=0; tosUO=0; tosUMAT=0; tosLOG=0; tosAS=0; tosUS=0; tosPAT=0;
+        tosCP=0; tosITG=0; tosOther=0; tosNoData=0; tosSum=0;
+    if (featureProperties["tos_ao"]) {tosAO=featureProperties["tos_ao"];}
+    if (featureProperties["tos_uo"]) {tosUO=featureProperties["tos_uo"];}
+    if (featureProperties["tos_umat"]) {tosUMAT=featureProperties["tos_umat"];}
+    if (featureProperties["tos_log"]) {tosLOG=featureProperties["tos_log"];}
+    if (featureProperties["tos_as"]) {tosAS=featureProperties["tos_as"];}
+    if (featureProperties["tos_us"]) {tosUS=featureProperties["tos_us"];}
+    if (featureProperties["tos_pat"]) {tosPAT=featureProperties["tos_pat"];}
+    if (featureProperties["tos_cp"]) {tosCP=featureProperties["tos_cp"];}
+    if (featureProperties["tos_itg"]) {tosITG=featureProperties["tos_itg"];}
+    if (featureProperties["tos_other"]) {tosOther=featureProperties["tos_other"];}
+    if (featureProperties["tos_nodata"]) {tosNoData=featureProperties["tos_nodata"];}
+    tosSum = tosAO+tosUO+tosUMAT+tosLOG+tosAS+tosUS+tosPAT+tosCP+tosITG+tosOther+tosNoData;
     chart2Data =
     {
         "AO": featureProperties["tos_ao"],
@@ -406,6 +447,9 @@ function initPieChart(){
             "outer": {
                 "pieDistance": 10
             },
+            "inner": {
+                "hideWhenLessThanPercentage": 10
+            },            
             "mainLabel": {
                 "font": "verdana"
             },
@@ -438,7 +482,23 @@ function initPieChart(){
                 "bottom": 0,
                 "left": 0
             }
-        }
+        },
+        "callbacks":{
+            onMouseoverSegment: function(info){
+                var left = $("#"+info.segment.id).offset().left+$("#"+info.segment.id).width()/2;
+                var top = $("#"+info.segment.id).offset().top+$("#"+info.segment.id).height()/2;
+                var labelText = Math.round(info.data.value/tosSum*100);
+                d3.select("#tooltip")
+                    .style("left",left+"px")
+                    .style("top",top+"px")
+                    .style("opacity",1)
+                    .select("#tooltip-value")
+                    .text(labelText);
+            },
+            onMouseoutSegment: function(){
+                d3.select("#tooltip").style("opacity",0);
+            }
+        }        
     });
 }
 
@@ -461,6 +521,11 @@ function openBottomPanel(){
 }
 
 // add interaction
+function updateInfo(e){
+    var layer = e.target;
+    info.update(layer.feature.properties);
+}
+
 function highlightFeature(e) {
     // Highlight clicked feature
     var layer = e.target;
@@ -521,7 +586,7 @@ function openPopup(e){
 
 function onEachFeature(feature, layer) {
     layer.on({
-//        mouseover: openPopup,
+        mouseover: updateInfo,
 //        mouseout: resetHighlight,
         click: highlightFeature
     });
@@ -538,9 +603,11 @@ var legend = L.control({position: 'topright'});
 
 legend.onAdd = function (map) {
 
-    var div = L.DomUtil.create('div', 'info legend'),
+    var div = L.DomUtil.create('div', 'legend'),
         grades = [1,100,1000,10000],
         labels = [];
+
+    div.innerHTML += "<h4>Number of Contractors</h4>";
 
     // loop through value intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
@@ -552,6 +619,71 @@ legend.onAdd = function (map) {
     return div;
 };
 
-legend.addTo(map);
+// button to show/hide legend
+var legendBtn = L.control({position: 'topright'});
+legendBtn.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'legend-btn');
+    return this._div;
+};
+legendBtn.addTo(map);
+
+$(".legend-btn").attr("title","Show Legend").hover(
+    function()
+    {
+        $(this).css("cursor","pointer").css("background-color","#E4E4E4");
+    },
+    function()
+    {
+        $(this).css("cursor","auto");
+        if($(".legend").length) {$(this).css("background-color","#C1C1C1");}
+        else {$(this).css("background-color","#FFF");}
+    }
+);
+$(".legend-btn").click(function(){
+    if ($(".legend").length)
+    {
+        $(this).attr("title","Show Legend").css("background-color","#C1C1C1");
+        map.removeControl(legend);
+    }
+    else
+    {
+        $(this).attr("title","Hide Legend")
+        map.addControl(legend);
+    }
+});
+
+// button to show/hide info window
+var infoBtn = L.control({position: 'topright'});
+infoBtn.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info-btn');
+    return this._div;
+};
+infoBtn.addTo(map);
+
+$(".info-btn").attr("title","Show Information Window").hover(
+    function()
+    {
+        $(this).css("cursor","pointer").css("background-color","#E4E4E4");
+    },
+    function()
+    {
+        $(this).css("cursor","auto");
+        if($(".info").length) {$(this).css("background-color","#C1C1C1");}
+        else {$(this).css("background-color","#FFF");}
+    }
+);
+$(".info-btn").click(function(){
+    if ($(".info").length)
+    {
+        $(this).attr("title","Show Information Window").css("background-color","#C1C1C1");
+        map.removeControl(info);
+    }
+    else
+    {
+        $(this).attr("title","Hide Information Window")
+        map.addControl(info);
+    }
+});
+
 </script>
 </body></html>

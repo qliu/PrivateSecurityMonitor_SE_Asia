@@ -59,8 +59,8 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
       L.DomUtil.addClass(this._zoomInButton, className)
     }
 
-//    if (map._zoom === defaultZoom) {
-//      L.DomUtil.addClass(this._zoomMinButton, className)
-//    }
+    if (map._zoom === defaultZoom) {
+      L.DomUtil.addClass(this._zoomMinButton, className)
+    }
   }
 })
