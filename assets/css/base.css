@@ -17,24 +17,26 @@ div {
 }
 
 #banner {
+    display: block;
 	min-width: 1024px;
 	width: 100%;
     min-height: 100px;
 	height: 8%;
 	margin: 0px auto;    
 	background-image: url(../images/sie_center_logo.png), -webkit-linear-gradient(top, #333 0%, #8a928a 100%);
-	background-position: 10% 50%, 0 0;
+	background-position: 5% 50%, 0 0;
 	background-repeat: no-repeat;
 	background-size: 120px 65px,100% 100%;
 }
 
 #banner h1{
-	margin: 0px auto;
+	text-align: center;
+    margin: 0;
+    padding-left: 5%;
 	font-family: 'Freight Sans Bold','lucida grande',tahoma,verdana,arial,sans-serif;
 	font-size: 3.5em;
 	color: white;
     text-shadow: 4px 3px 0px #333333, 9px 8px 0px rgba(0, 0, 0, 0.15);
-	margin-left: 30%;
 	padding-top: 20px;
 }
 
