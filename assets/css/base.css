@@ -92,17 +92,32 @@ div {
     display: block;
     height: 190px;
     width: 15%;
-    margin: 10px 0;
     padding-left: 20px;
-    padding-top: 20px;
+    margin-right: 20px;
     float: left;
 }
+
+#bottom-panel-content-container div.bottom-panel-text-container h3{
+    font-size: 1.5em;
+    text-shadow: 1px 1px 3px #999999, 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+#bottom-panel-content-container div.bottom-panel-text-container p{
+    font-size: 1.2em;
+    color: #333333;
+    text-shadow: 1px 1px 1px #CCCCCC, 1px 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+#bottom-panel-content-container div.bottom-panel-text-container img{
+    margin-left: 10px;
+}
+
 
 #bottom-panel-content-container div.bottom-panel-chart-container {
     display: block;
     height: 190px;
     width: 40%;
-    margin: 10px 0;
+    margin: 10px 0 0 0;
     float: left;
 }
 
@@ -110,9 +125,10 @@ div {
     display: block;
     height: 190px;
     width: 150px;
-    margin: 10px 0;
+    margin: 20px 10px 0 10px;
     float: left
 }
+
 
 #bottom-panel-content-container svg.bottom-chart-lengend-svg {
     margin-top: 10px;

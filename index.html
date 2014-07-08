@@ -7,8 +7,11 @@
     <title>Private Security Monitor - Southeast Asia</title>
  
     <!-- CSS -->
+    <!-- hopscotch feature tour js -->
+    <link rel="stylesheet" href="assets/css/hopscotch.min.css">
+    
     <!-- Leaflet -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
 
     <!-- Leaflet Custom Controls -->
     <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
@@ -83,6 +86,9 @@
 
 
     <!-- JavaScript -->
+    <!-- hopscotch feature tool js -->
+    <script src="assets/js/hopscotch.min.js"></script>
+    <script src="assets/js/my-featuretour.js"></script>
     <!-- JQuery 1.11-->
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- JQuery UI -->
@@ -192,12 +198,18 @@ function initPieChart(){
     }
     
     // Bottom Panel Text
-    var textContent = "<p><b>Country</b>: " + featureProperties.country + "</b></p>"
-                    + "<p><b>Number of Contractors</b>: " + featureProperties.sum_contractors + "</b></p>"
+//    var textContent = "<p><b>Country</b>: " + featureProperties.country + "</b></p>"
+//                    + "<p><b>Number of Contractors</b>: " + featureProperties.sum_contractors + "</b></p>"
+////                    + "<p><b>Types of Services</b>: " + featureProperties.types_of_services + "</b></p>"
+////                    + "<p><b>Types of Clients</b>: " + featureProperties.types_of_clients + "</b></p>"
+//                    + "<p><b>Total Deaths</b>: " + featureProperties.deaths + "</b></p>"
+//                    + "<p><b>Total Injuries</b>: " + featureProperties.injuries + "</b></p>"
+    var textContent = "<h3>" + featureProperties.country + "</h3>"
+                    + "<p><img src='assets/images/icon_military.png' title='Number of Contractors'> <b>" + featureProperties.sum_contractors + "</b></p>"
 //                    + "<p><b>Types of Services</b>: " + featureProperties.types_of_services + "</b></p>"
 //                    + "<p><b>Types of Clients</b>: " + featureProperties.types_of_clients + "</b></p>"
-                    + "<p><b>Total Deaths</b>: " + featureProperties.deaths + "</b></p>"
-                    + "<p><b>Total Injuries</b>: " + featureProperties.injuries + "</b></p>"
+                    + "<p><img src='assets/images/icon_death.png' title='Total Deaths'> <b>" + featureProperties.deaths + "</b> "
+                    + " <img src='assets/images/icon_injury.png' title='Total Injuries'> <b>" + featureProperties.injuries + "</b></p>"
     $('#bottomChartTextContainer').html(textContent);
     
     // Pie Chart 1 - Type of Clients
@@ -685,5 +697,11 @@ $(".info-btn").click(function(){
     }
 });
 
+// add id to feature tool elements
+$(".leaflet-control-zoom-in").attr('id',"feature-zoomin");
+$(".leaflet-control-zoom-out").attr('id',"feature-zoomout");
+$(".leaflet-control-zoom-min").attr('id',"feature-zoommin");
+$(".legend-btn").attr('id',"feature-legendbtn");
+$(".info-btn").attr('id',"feature-infobtn");
 </script>
 </body></html>
