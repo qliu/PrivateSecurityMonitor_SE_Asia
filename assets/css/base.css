@@ -24,6 +24,7 @@ div {
 	height: 8%;
 	margin: 0px auto;    
 	background-image: url(../images/sie_center_logo.png), -webkit-linear-gradient(top, #333 0%, #8a928a 100%);
+    background-image: url(../images/sie_center_logo.png), -ms-linear-gradient(top, #333 0%, #8a928a 100%);
 	background-position: 5% 50%, 0 0;
 	background-repeat: no-repeat;
 	background-size: 120px 65px,100% 100%;
