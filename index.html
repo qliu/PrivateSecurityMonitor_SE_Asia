@@ -637,7 +637,7 @@ helpBtn.onAdd = function (map) {
 };
 helpBtn.addTo(map);
 $(".help-btn").attr("id","feature-helpbtn");
-$(".help-btn").attr("title","Help - Show feature tour").hover(
+$(".help-btn").attr("title","Show Tutorial").hover(
     function()
     {
         $(this).css("cursor","pointer").css("background-color","#E4E4E4");
@@ -650,11 +650,13 @@ $(".help-btn").attr("title","Help - Show feature tour").hover(
     }
 );
 $(".help-btn").click(function(){
-    mgr = hopscotch.getCalloutManager();
-    if (!hopscotch.isActive) {
-      mgr.removeAllCallouts();
-      hopscotch.startTour(featureTour);
-    }
+    hopscotch.endTour();
+    hopscotch.startTour(featureTour,1)
+//    mgr = hopscotch.getCalloutManager();
+//    if (!hopscotch.isActive) {
+//      mgr.removeAllCallouts();
+//      hopscotch.startTour(featureTour);
+//    }
 });
 
 // button to show/hide legend
