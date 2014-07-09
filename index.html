@@ -6,15 +6,15 @@
  
     <title>Private Security Monitor - Southeast Asia</title>
  
-    <!-- CSS -->
-    <!-- hopscotch feature tour js -->
-    <link rel="stylesheet" href="assets/css/hopscotch.min.css">
-    
+    <!-- CSS -->   
     <!-- Leaflet -->
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
 
     <!-- Leaflet Custom Controls -->
     <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
+
+    <!-- hopscotch feature tour js -->
+    <link rel="stylesheet" href="assets/css/hopscotch.min.css">
 
     <!-- My CSS -->
     <link rel="stylesheet" href="assets/css/base.css">
@@ -24,7 +24,7 @@
 	<h1>Private Security Monitor <span id="sub-title">Southeast Asia</span></h1>
 </div> 
 <div id="content-container">
-<div id="map"></div>
+<div id="map"><div id="feature-mapshp"></div></div>
 <div id="bottom-panel">
     <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
     <!-- tooltip for pie chart -->
@@ -86,9 +86,6 @@
 
 
     <!-- JavaScript -->
-    <!-- hopscotch feature tool js -->
-    <script src="assets/js/hopscotch.min.js"></script>
-    <script src="assets/js/my-featuretour.js"></script>
     <!-- JQuery 1.11-->
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- JQuery UI -->
@@ -101,12 +98,13 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <!-- D3 Pie -->
     <script src="assets/js/d3pie.min.js"></script>
-
+    <!-- hopscotch feature tool js -->
+    <script src="assets/js/hopscotch.min.js"></script>
     <!-- My Javascript -->
     <script type="text/javascript" src="data/seasia_countries.js"></script>
     <script type="text/javascript" src="data/chart1.js"></script>
+    <script src="assets/js/my-featuretour.js"></script>
 <script type="text/javascript">
-
 // add base map
 var map = L.map('map',{worldCopyJump:true,zoomControl:false});
 map.setView([7, 115.64], 5);
@@ -631,6 +629,34 @@ legend.onAdd = function (map) {
     return div;
 };
 
+// button to start feature tour
+var helpBtn = L.control({position: 'topright'});
+helpBtn.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'help-btn');
+    return this._div;
+};
+helpBtn.addTo(map);
+$(".help-btn").attr("id","feature-helpbtn");
+$(".help-btn").attr("title","Help - Show feature tour").hover(
+    function()
+    {
+        $(this).css("cursor","pointer").css("background-color","#E4E4E4");
+    },
+    function()
+    {
+        $(this).css("cursor","auto");
+        if($(".info").length) {$(this).css("background-color","#C1C1C1");}
+        else {$(this).css("background-color","#FFF");}
+    }
+);
+$(".help-btn").click(function(){
+    mgr = hopscotch.getCalloutManager();
+    if (!hopscotch.isActive) {
+      mgr.removeAllCallouts();
+      hopscotch.startTour(featureTour);
+    }
+});
+
 // button to show/hide legend
 var legendBtn = L.control({position: 'topright'});
 legendBtn.onAdd = function (map) {
@@ -638,7 +664,6 @@ legendBtn.onAdd = function (map) {
     return this._div;
 };
 legendBtn.addTo(map);
-
 $(".legend-btn").attr("title","Show Legend").hover(
     function()
     {
@@ -671,7 +696,6 @@ infoBtn.onAdd = function (map) {
     return this._div;
 };
 infoBtn.addTo(map);
-
 $(".info-btn").attr("title","Show Information Window").hover(
     function()
     {
@@ -698,10 +722,10 @@ $(".info-btn").click(function(){
 });
 
 // add id to feature tool elements
-$(".leaflet-control-zoom-in").attr('id',"feature-zoomin");
-$(".leaflet-control-zoom-out").attr('id',"feature-zoomout");
-$(".leaflet-control-zoom-min").attr('id',"feature-zoommin");
-$(".legend-btn").attr('id',"feature-legendbtn");
-$(".info-btn").attr('id',"feature-infobtn");
+$(".leaflet-control-zoom-in").attr("id","feature-zoomin");
+$(".leaflet-control-zoom-out").attr("id","feature-zoomout");
+$(".leaflet-control-zoom-min").attr("id","feature-zoommin");
+$(".legend-btn").attr("id","feature-legendbtn");
+$(".info-btn").attr("id","feature-infobtn");
 </script>
 </body></html>

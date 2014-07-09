@@ -6,6 +6,7 @@ html, body { height: 100% }
 body {
     margin: 0;
     font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    overflow: hidden;
 }
 div {
  display: block;
@@ -81,6 +82,7 @@ div {
     position: absolute;
     bottom: 0;
     height: 200px;
+    min-width: 1024px;
     width: 100%;
     background-color:white;
     box-shadow: 0 0 8px rgba(0,0,0,0.4);
@@ -91,7 +93,7 @@ div {
 #bottom-panel-content-container div.bottom-panel-text-container {
     display: block;
     height: 190px;
-    width: 15%;
+    width: 160px;
     padding-left: 20px;
     margin-right: 20px;
     float: left;
@@ -218,4 +220,22 @@ div {
     background: #FFF url(../images/icon_info.png) no-repeat scroll center center;
     box-shadow: 0 0 8px rgba(0,0,0,0.6);
     border-radius: 5px;    
+}
+
+.help-btn {
+    width: 40px;
+    height: 40px;
+    background: #FFF url(../images/icon_help.png) no-repeat scroll center center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    border-radius: 5px;    
+}
+
+#feature-mapshp{
+    display:block;
+    position: absolute;
+    width:1px;
+    height:1px;
+    top:50%;
+    left:50%;
+    opacity: 0;
 }
