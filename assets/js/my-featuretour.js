@@ -83,10 +83,10 @@ var featureTour = {
         },
         {
             title: "Interactive Map",
-            content: "Hover over a country to see the mapped value in the information window.<br/><br/> \
-                      * Click <img src='assets/images/icon_info.png' style='height:20px;width:20px;'/> \
+            content: "<br/>Hover over a country to see the mapped value in the information window.<br/> \
+                      * Click information button <img src='assets/images/icon_info.png' style='height:20px;width:20px;'/> \
                       to open information window if it's hidden.<br/><br/>\
-                      Click on a country to show the country's statistics.<br/><br/>",
+                      Click on a country to show the country's statistics.<br/>",
             target: "feature-mapshp",
             placement: "top",
             xOffset: "center",

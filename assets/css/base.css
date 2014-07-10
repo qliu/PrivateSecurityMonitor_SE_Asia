@@ -126,8 +126,8 @@ div {
 #bottom-panel-content-container div.bottom-chart-legend {
     display: block;
     height: 190px;
-    width: 150px;
-    margin: 20px 10px 0 10px;
+    width: 140px;
+    margin: 20px 0 0 10px;
     float: left
 }
 
