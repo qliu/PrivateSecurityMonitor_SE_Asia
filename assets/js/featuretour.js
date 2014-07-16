@@ -1,3 +1,10 @@
+// Add id to feature tour target elements
+$(".leaflet-control-zoom-in").attr("id","feature-zoomin");
+$(".leaflet-control-zoom-out").attr("id","feature-zoomout");
+$(".leaflet-control-zoom-min").attr("id","feature-zoommin");
+$(".legend-btn").attr("id","feature-legendbtn");
+$(".info-btn").attr("id","feature-infobtn");
+
 endTour = function() {
     hopscotch.endTour()
 }

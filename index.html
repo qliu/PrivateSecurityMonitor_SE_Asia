@@ -6,684 +6,113 @@
   
   <title>Private Security Monitor - Southeast Asia</title>
 
-  <!-- CSS -->   
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
-  <!-- Leaflet Custom Controls -->
-  <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">
-  <!-- hopscotch feature tour js -->
-  <link rel="stylesheet" href="assets/css/hopscotch.min.css">
-  <!-- My CSS -->
+  <!-- 3rd Party CSS -->
+  <link rel="stylesheet" href="assets/3rdparty/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/3rdparty/hopscotch/hopscotch.min.css">  <!-- hopscotch feature tour js -->
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/L.Control.ZoomMin.css">             <!-- Leaflet Custom Controls -->
   <link rel="stylesheet" href="assets/css/base.css">
 </head>
 <body>
-<!-- Banner -->
-<div id="banner">
-  <h1>Private Security Monitor <span id="sub-title">Southeast Asia</span></h1>
-</div> 
-<!-- Main Content -->
-<div id="content-container">
-  <!-- Map -->
-  <div id="map">
-    <!-- Hidden div to position feature tour bubble for the map -->
-    <div id="feature-mapshp"></div>
-  </div>
-  <!-- Bottom Panel showing statistics -->
-  <div id="bottom-panel">
-    <!-- Button to toggle bottom panel -->
-    <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
-    <!-- tooltip for pie chart -->
-    <div id="tooltip" class="hidden">
-      <p><span id="tooltip-value">100</span>%</p>
+  <!-- Banner -->
+  <div id="banner">
+    <h1>Private Security Monitor <span id="sub-title">Southeast Asia</span></h1>
+  </div> 
+
+  <!-- Main Content -->
+  <div id="content-container">
+    <!-- Map -->
+    <div id="map">
+      <!-- Hidden div to position feature tour bubble for the map -->
+      <div id="feature-mapshp"></div>
     </div>
-    <!-- bottom panel content -->
-    <div id="bottom-panel-content-container">
-      <!-- Left side text summary -->
-      <div id="bottomChartTextContainer" class="bottom-panel-text-container"></div>
-      <!-- Pie Chart 1: Type of Client -->
-      <div id="chartContainer1" class="bottom-panel-chart-container">
-        <!-- Pie chart 1 legend *temporary hard coded will optimize with D3 later -->
-        <div id="pieChart1Legend" class="bottom-chart-legend">
-          <text id="p14_title" class="p14_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Client</text>
-          <svg class="bottom-chart-lengend-svg">
-            <text x="30" y="20" dy=".1em">Government</text>
-            <rect width="16" height="12" x="10" y="10" style="fill:#994040;"></rect>
-            <text x="30" y="40" dy=".1em">Private</text>
-            <rect width="16" height="12" x="10" y="30" style="fill:#9b8050;"></rect>
-            <text x="30" y="60" dy=".1em">Other</text>
-            <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"></rect>
-            <text x="30" y="80" dy=".1em">No Data</text>
-            <rect width="16" height="12" x="10" y="70" style="fill:#7f7f77;"></rect>
-          </svg>
-        </div>
-        <div id="pieChart1" class="bottom-chart"></div>
+    
+    <!-- Bottom Panel showing statistics -->
+    <div id="bottom-panel">
+      <!-- Button to toggle bottom panel -->
+      <input id="toggle-bottom-panel-button" type="button" value="" title="Show Statistics">
+      <!-- tooltip for pie chart -->
+      <div id="tooltip" class="hidden">
+        <p><span id="tooltip-value">100</span>%</p>
       </div>
-      <!-- Pie Chart 2: Type of Service -->
-      <div id="chartContainer2" class="bottom-panel-chart-container">
-        <!-- Pie chart 2 legend *temporary hard coded will optimize with D3 later -->
-        <div id="pieChart1Legend" class="bottom-chart-legend">
-          <text id="p15_title" class="p15_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Service</text>
-          <svg class="bottom-chart-lengend-svg">
-            <text x="35" y="20" dy=".1em">AO</text>
-            <rect width="16" height="12" x="10" y="10" style="fill:#994040;"><title>Armed Operational Support</title></rect>
-            <text x="35" y="40" dy=".1em">UO</text>
-            <rect width="16" height="12" x="10" y="30" style="fill:#949645;"><title>Unarmed Operational Support on the Battlefield</title></rect>
-            <text x="35" y="60" dy=".1em">UMAT</text>
-            <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"><title>Unarmed Military Advice and Training</title></rect>
-            <text x="35" y="80" dy=".1em">LOG</text>
-            <rect width="16" height="12" x="10" y="70" style="fill:#6b9944;"><title>Logistical Support</title></rect>
-            <text x="35" y="100" dy=".1em">AS</text>
-            <rect width="16" height="12" x="10" y="90" style="fill:#459654;"><title>Armed Site Security</title></rect>
-            <text x="105" y="20" dy=".1em">US</text>
-            <rect width="16" height="12" x="80" y="10" style="fill:#3c846f;"><title>Unarmed Site Security</title></rect>
-            <text x="105" y="40" dy=".1em">PAT</text>
-            <rect width="16" height="12" x="80" y="30" style="fill:#47849e;"><title>Police Advice and Training</title></rect>
-            <text x="105" y="60" dy=".1em">CP</text>
-            <rect width="16" height="12" x="80" y="50" style="fill:#597ab7;"><title>Crime Prevention</title></rect>
-            <text x="105" y="80" dy=".1em">ITG</text>
-            <rect width="16" height="12" x="80" y="70" style="fill:#5f4699;"><title>Intelligence</title></rect>
-            <text x="105" y="100" dy=".1em">Other</text>
-            <rect width="16" height="12" x="80" y="90" style="fill:#96459b;"><title>Other</title></rect>
-            <text x="35" y="120" dy=".1em">No Data</text>
-            <rect width="16" height="12" x="10" y="110" style="fill:#7f7f77;"><title>No Data</title></rect>
-          </svg>                
+      
+      <!-- bottom panel content -->
+      <div id="bottom-panel-content-container">
+        <!-- Left side text summary -->
+        <div id="bottomChartTextContainer" class="bottom-panel-text-container"></div>
+        
+        <!-- Pie Chart 1: Type of Client -->
+        <div id="chartContainer1" class="bottom-panel-chart-container">
+          <!-- Pie chart 1 legend *temporary hard coded will optimize with D3 later -->
+          <div id="pieChart1Legend" class="bottom-chart-legend">
+            <text id="p14_title" class="p14_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Client</text>
+            <svg class="bottom-chart-lengend-svg">
+              <text x="30" y="20" dy=".1em">Government</text>
+              <rect width="16" height="12" x="10" y="10" style="fill:#994040;"></rect>
+              <text x="30" y="40" dy=".1em">Private</text>
+              <rect width="16" height="12" x="10" y="30" style="fill:#9b8050;"></rect>
+              <text x="30" y="60" dy=".1em">Other</text>
+              <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"></rect>
+              <text x="30" y="80" dy=".1em">No Data</text>
+              <rect width="16" height="12" x="10" y="70" style="fill:#7f7f77;"></rect>
+            </svg>
+          </div>
+          <div id="pieChart1" class="bottom-chart"></div>
         </div>
-        <div id="pieChart2" class="bottom-chart"></div>
+        
+        <!-- Pie Chart 2: Type of Service -->
+        <div id="chartContainer2" class="bottom-panel-chart-container">
+          <!-- Pie chart 2 legend *temporary hard coded will optimize with D3 later -->
+          <div id="pieChart1Legend" class="bottom-chart-legend">
+            <text id="p15_title" class="p15_title" x="150" y="18" text-anchor="middle" fill="#333333" style="font-size: 16px; font-family: verdana;">Type of Service</text>
+            <svg class="bottom-chart-lengend-svg">
+              <text x="35" y="20" dy=".1em">AO</text>
+              <rect width="16" height="12" x="10" y="10" style="fill:#994040;"><title>Armed Operational Support</title></rect>
+              <text x="35" y="40" dy=".1em">UO</text>
+              <rect width="16" height="12" x="10" y="30" style="fill:#949645;"><title>Unarmed Operational Support on the Battlefield</title></rect>
+              <text x="35" y="60" dy=".1em">UMAT</text>
+              <rect width="16" height="12" x="10" y="50" style="fill:#6d9b45;"><title>Unarmed Military Advice and Training</title></rect>
+              <text x="35" y="80" dy=".1em">LOG</text>
+              <rect width="16" height="12" x="10" y="70" style="fill:#6b9944;"><title>Logistical Support</title></rect>
+              <text x="35" y="100" dy=".1em">AS</text>
+              <rect width="16" height="12" x="10" y="90" style="fill:#459654;"><title>Armed Site Security</title></rect>
+              <text x="105" y="20" dy=".1em">US</text>
+              <rect width="16" height="12" x="80" y="10" style="fill:#3c846f;"><title>Unarmed Site Security</title></rect>
+              <text x="105" y="40" dy=".1em">PAT</text>
+              <rect width="16" height="12" x="80" y="30" style="fill:#47849e;"><title>Police Advice and Training</title></rect>
+              <text x="105" y="60" dy=".1em">CP</text>
+              <rect width="16" height="12" x="80" y="50" style="fill:#597ab7;"><title>Crime Prevention</title></rect>
+              <text x="105" y="80" dy=".1em">ITG</text>
+              <rect width="16" height="12" x="80" y="70" style="fill:#5f4699;"><title>Intelligence</title></rect>
+              <text x="105" y="100" dy=".1em">Other</text>
+              <rect width="16" height="12" x="80" y="90" style="fill:#96459b;"><title>Other</title></rect>
+              <text x="35" y="120" dy=".1em">No Data</text>
+              <rect width="16" height="12" x="10" y="110" style="fill:#7f7f77;"><title>No Data</title></rect>
+            </svg>                
+          </div>
+          <div id="pieChart2" class="bottom-chart"></div>
+        </div>
       </div>
     </div>
+    <!-- end of bottom panel -->
   </div>
-  <!-- end of bottom panel -->
-</div>
-<!-- end of main content -->
+  <!-- end of main content -->
 
-<!-- JavaScript -->
-<!-- JQuery 1.11-->
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<!-- JQuery UI -->
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
-<!-- Leaflet -->
-<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<!-- Leaflet Custom Controls -->
-<script src="assets/js/L.Control.ZoomMin.js"></script>
-<!-- D3 -->
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<!-- D3 Pie -->
-<script src="assets/js/d3pie.min.js"></script>
-<!-- hopscotch feature tool js -->
-<script src="assets/js/hopscotch.min.js"></script>
-<!-- My Javascript -->
-<!-- Load Southeast Asia Countries data -->
-<script type="text/javascript" src="data/seasia_countries.js"></script>
-<!-- Website feature tour (tutorial) -->
-<script src="assets/js/my-featuretour.js"></script>
-<!-- Inline JS *temporary now, will move out into files later -->
-<script type="text/javascript">
-// Global variable declaration
-var lastClickedLayer; // record last clicekd layer
-var geojson; // load geojson data
-var pie1 // pie chart 1 - type of client
-var pie2 // pie chart 2 - type of service
-
-// Add base map
-var map = L.map('map',{worldCopyJump:true,zoomControl:false});
-map.setView([7, 115.64], 5);
-map.worldCopyJump = true;
-var basemap = L.tileLayer(
-  'http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
-  attribution: '<a href="http://content.stamen.com/dotspotting_toner_cartography_available_for_download">Stamen Toner</a>, <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-  maxZoom: 7,
-  minZoom: 3
-});
-basemap.addTo(map);
-
-// Add custom zoom control
-map.addControl(new L.Control.ZoomMin());
-
-// Load Southeast Asia countries
-L.geoJson(seasia_countries).addTo(map);
-
-// Leaflet Conrols
-// Information Window
-var info = L.control();
-info.onAdd = function (map){
-  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-  this.update();
-  return this._div;
-};
-// Update the information window based on hovered/clicked feature properties
-info.update = function (props) {
-  this._div.innerHTML = '<h4>Number of Contractors</h4>'
-                      + (props ? '<b>' + props.country + '</b><br />' + props.sum_contractors: 'Hover over a country');
-};
-
-// Pop-up window *abandoned
-//var popup = L.popup();
-
-// Map Styles
-// 4-color palette for choropleth map
-function getColor(d) {
-  return d > 10000 ? '#800026' :
-         d > 1000  ? '#E31A1C' :
-         d > 100   ? '#FD8D3C' :
-         d > 0   ? '#FED976' :
-         null;
-}
-// Old 7  color palette
-//function getColor(d) {
-//  return d > 100 ? '#800026' :
-//         d > 50  ? '#BD0026' :
-//         d > 40  ? '#E31A1C' :
-//         d > 30  ? '#FC4E2A' :
-//         d > 20   ? '#FD8D3C' :
-//         d > 10   ? '#FEB24C' :
-//         d > 0   ? '#FED976' :
-//         null;
-//}
-// Set map style
-function style(feature) {
-  return {
-    fillColor: getColor(feature.properties.sum_contractors),
-    weight: 2,
-    opacity: 1,
-    color: 'white',
-    dashArray: '0',
-    fillOpacity: 0.7
-  };
-}
-
-// Bottom panel visualizations
-// D3 charts
-// d3pie 0.1.3 http://d3pie.org/
-function initPieChart(){
-  var pie1Data,
-      chart1Data,
-      pie2Data,
-      chart2Data,
-      featureProperties;
-  if (lastClickedLayer) {
-    featureProperties = lastClickedLayer.feature.properties;
-  }
-  else {
-    featureProperties = seasia_countries["features"][0]["properties"]
-  }
-  // Bottom Panel Text
-  var textContent = "<h3>" + featureProperties.country + "</h3>"
-                  + "<p><img src='assets/images/icon_military.png' title='Number of Contractors'><b>" 
-                  + featureProperties.sum_contractors + "</b></p>"
-                  + "<p><img src='assets/images/icon_death.png' title='Total Deaths'> <b>"
-                  + featureProperties.deaths + "</b> "
-                  + " <img src='assets/images/icon_injury.png' title='Total Injuries'> <b>"
-                  + featureProperties.injuries + "</b></p>"
-  $('#bottomChartTextContainer').html(textContent);
-  // Pie Chart 1 - Type of Clients
-  var tocPrivate, tocGovernment, tocOther, tocNoData, tocSum=0;
-  tocPrivate = featureProperties["toc_private"] ? featureProperties["toc_private"] : 0;
-  tocGovernment = featureProperties["toc_government"] ? featureProperties["toc_government"] : 0;
-  tocOther = featureProperties["toc_other"] ? featureProperties["toc_other"] : 0;
-  tocNoData = featureProperties["toc_nodata"] ? featureProperties["toc_nodata"] : 0;
-  tocSum = tocPrivate+tocGovernment+tocOther+tocNoData;
-  chart1Data = {
-                "Private": tocPrivate,
-                "Government": tocGovernment,
-                "Other": tocOther,
-                "NoData": tocNoData
-  };
-  pie1Data = [
-    {
-      "label": "Private",
-      "value": chart1Data["Private"],
-      "color": "#994040"
-    },
-    {
-      "label": "Government",
-      "value": chart1Data["Government"],
-      "color": "#9b8050"
-    },
-    {
-      "label": "Other",
-      "value": chart1Data["Other"],
-      "color": "#6d9b45"
-    },
-    {
-      "label": "No Data",
-      "value": chart1Data["NoData"],
-      "color": "#7f7f77"
-    }
-  ];
-  if (pie1) {pie1.destroy();pie1=null;}
-  pie1 = new d3pie("pieChart1", {
-    "header": {
-      "title": {
-        "text": "",
-        "fontSize": 16,
-        "font": "verdana"
-      },
-      "subtitle": {
-        "color": "#999999",
-        "fontSize": 10,
-        "font": "verdana"
-      },
-      "titleSubtitlePadding": 20
-    },
-    "footer": {
-      "color": "#999999",
-      "fontSize": 11,
-      "font": "open sans",
-      "location": "bottom-center"
-    },
-    "size": {
-      "canvasHeight": 180,
-      "canvasWidth": 280,
-      "pieInnerRadius": "26%",
-      "pieOuterRadius": "90%"
-    },
-    "data": { "content": pie1Data },
-    "labels": {
-      "outer": { "pieDistance": 10 },
-      "inner": { "hideWhenLessThanPercentage": 10 },
-      "mainLabel": { "font": "verdana" },
-      "percentage": {
-        "color": "#e1e1e1",
-        "font": "verdana",
-        "decimalPlaces": 0
-      },
-      "value": {
-        "color": "#e1e1e1",
-        "font": "verdana"
-      }
-    },
-    "effects": {
-      "pullOutSegmentOnClick": {
-        "effect": "linear",
-        "speed": 400,
-        "size": 8
-      }
-    },
-    "misc": {
-      "gradient": {
-        "enabled": true,
-        "percentage": 90,
-        "color": "#827d7d"
-      },
-      "canvasPadding": {
-        "top": 0,
-        "right": 0,
-        "bottom": 0,
-        "left": 0
-      }
-    },
-    "callbacks":{
-      onMouseoverSegment: function(info){
-        var left = $("#"+info.segment.id).offset().left+$("#"+info.segment.id).width()/2;
-        var top = $("#"+info.segment.id).offset().top+$("#"+info.segment.id).height()/2;
-        var labelText = Math.round(info.data.value/tocSum*100);
-        d3.select("#tooltip")
-            .style("left",left+"px")
-            .style("top",top+"px")
-            .style("opacity",1)
-            .select("#tooltip-value")
-              .text(labelText);
-        },
-        onMouseoutSegment: function(){ d3.select("#tooltip").style("opacity",0); }
-    }
-  });
-
-  // Pie Chart 2 - Type of Services
-  var tosAO, tosUO, tosUMAT, tosLOG, tosAS, tosUS, tosPAT,
-      tosCP, tosITG, tosOther, tosNoData, tosSum=0;
-  tosAO = featureProperties["tos_ao"] ? featureProperties["tos_ao"] : 0;
-  tosUO = featureProperties["tos_uo"] ? featureProperties["tos_uo"] : 0;
-  tosUMAT = featureProperties["tos_umat"] ? featureProperties["tos_umat"] : 0;
-  tosLOG = featureProperties["tos_log"] ? featureProperties["tos_log"] : 0;
-  tosAS = featureProperties["tos_as"] ? featureProperties["tos_as"] : 0;
-  tosUS = featureProperties["tos_us"] ? featureProperties["tos_us"] : 0;
-  tosPAT = featureProperties["tos_pat"] ? featureProperties["tos_pat"] : 0;
-  tosCP = featureProperties["tos_cp"] ? featureProperties["tos_cp"] : 0;
-  tosITG = featureProperties["tos_itg"] ? featureProperties["tos_itg"] : 0;
-  tosOther = featureProperties["tos_other"] ? featureProperties["tos_other"] : 0;
-  tosNoData = featureProperties["tos_nodata"] ? featureProperties["tos_nodata"] : 0;
-  tosSum = tosAO + tosUO + tosUMAT + tosLOG + tosAS + tosUS + tosPAT + tosCP
-         + tosITG + tosOther + tosNoData;
-  chart2Data = {
-    "AO": featureProperties["tos_ao"],
-    "UO": featureProperties["tos_uo"],
-    "UMAT": featureProperties["tos_umat"],
-    "LOG": featureProperties["tos_log"],
-    "AS": featureProperties["tos_as"],
-    "US": featureProperties["tos_us"],
-    "PAT": featureProperties["tos_pat"],
-    "CP": featureProperties["tos_cp"],
-    "ITG": featureProperties["tos_itg"],
-    "Other": featureProperties["tos_other"],
-    "NoData": featureProperties["tos_nodata"],
-  }
-  pie2Data = [
-    {
-      "label": "AO",
-      "value": chart2Data["AO"],
-      "color": "#994040"
-    },
-    {
-      "label": "UO",
-      "value": chart2Data["UO"],
-      "color": "#9b8050"
-    },
-    {
-      "label": "UMAT",
-      "value": chart2Data["UMAT"],
-      "color": "#949645"
-    },
-    {
-      "label": "LOG",
-      "value": chart2Data["LOG"],
-      "color": "#6b9944"
-    },
-    {
-      "label": "AS",
-      "value": chart2Data["AS"],
-      "color": "#459654"
-    },
-    {
-      "label": "US",
-      "value": chart2Data["US"],
-      "color": "#3c846f"
-    },
-    {
-      "label": "PAT",
-      "value": chart2Data["PAT"],
-      "color": "#47849e"
-    },
-    {
-      "label": "CP",
-      "value": chart2Data["CP"],
-      "color": "#597ab7"
-    },
-    {
-      "label": "ITG",
-      "value": chart2Data["ITG"],
-      "color": "#5f4699"
-    },
-    {
-      "label": "Other",
-      "value": chart2Data["Other"],
-      "color": "#96459b"
-    },
-    {
-      "label": "No Data",
-      "value": chart2Data["NoData"],
-      "color": "#7f7f77"
-    }
-  ]
-  if (pie2) { pie2.destroy(); pie2=null; }
-  pie2 = new d3pie("pieChart2", {
-    "header": {
-      "title": {
-        "text": "",
-        "fontSize": 16,
-        "font": "verdana"
-      },
-      "subtitle": {
-        "color": "#999999",
-        "fontSize": 10,
-        "font": "verdana"
-      },
-      "titleSubtitlePadding": 20
-    },
-    "footer": {
-      "color": "#999999",
-      "fontSize": 11,
-      "font": "open sans",
-      "location": "bottom-center"
-    },
-    "size": {
-      "canvasHeight": 180,
-      "canvasWidth": 250,
-      "pieInnerRadius": "26%",
-      "pieOuterRadius": "90%"
-    },
-    "data": {
-      "content": pie2Data
-    },
-    "labels": {
-      "outer": { "pieDistance": 10 },
-      "inner": { "hideWhenLessThanPercentage": 10 },            
-      "mainLabel": { "font": "verdana" },
-      "percentage": {
-        "color": "#e1e1e1",
-        "font": "verdana",
-        "decimalPlaces": 0
-      },
-      "value": {
-        "color": "#e1e1e1",
-        "font": "verdana"
-      }
-    },
-    "effects": {
-      "pullOutSegmentOnClick": {
-        "effect": "linear",
-        "speed": 400,
-        "size": 8
-      }
-    },
-    "misc": {
-      "gradient": {
-        "enabled": true,
-        "percentage": 90,
-        "color": "#827d7d"
-      },
-      "canvasPadding": {
-        "top": 0,
-        "right": 0,
-        "bottom": 0,
-        "left": 0
-      }
-    },
-    "callbacks":{
-      onMouseoverSegment: function(info){
-        var left = $("#"+info.segment.id).offset().left+$("#"+info.segment.id).width()/2;
-        var top = $("#"+info.segment.id).offset().top+$("#"+info.segment.id).height()/2;
-        var labelText = Math.round(info.data.value/tosSum*100);
-        d3.select("#tooltip")
-            .style("left",left+"px")
-            .style("top",top+"px")
-            .style("opacity",1)
-            .select("#tooltip-value")
-              .text(labelText);
-      },
-      onMouseoutSegment: function(){ d3.select("#tooltip").style("opacity",0); }
-    }        
-  });
-}
-// end of initPieChart function
-
-// Toggle bottom panel on button click
-$('#toggle-bottom-panel-button').click(function(){
-  $('#toggle-bottom-panel-button').toggleClass("collapse","slow");
-  $('#bottom-panel-content-container').slideToggle("slow");
-  // Initial Pie Chart
-  initPieChart();
-});
-
-// Open bottom panel on map feature click
-function openBottomPanel(){
-  $('#toggle-bottom-panel-button').addClass("collapse","slow");
-  $('#bottom-panel-content-container').slideDown("slow");
-  // Initial Pie Chart
-  initPieChart();
-}
-
-// Update information window
-function updateInfo(e){
-  var layer = e.target;
-  info.update(layer.feature.properties);
-}
-
-// Function on map feature click
-function highlightFeature(e) {
-  // Reset style of last clicked map feature
-  if (lastClickedLayer) { geojson.resetStyle(lastClickedLayer); }
-  // Highlight clicked map feature
-  var layer = e.target;
-  layer.setStyle({
-    weight: 1,
-    color: '#999',
-    dashArray: '',
-    fillOpacity: 0.7
-  });
-  // Trick for IE to bring clicked feature to front
-  if (!L.Browser.ie && !L.Browser.opera) { layer.bringToFront(); }
-  lastClickedLayer = layer;
-  // Center to clicekd feature at default zoom level (5)
-  map.setView(e.target.getBounds().getCenter(),5);
-  // map.fitBounds(e.target.getBounds());
-  // Open bottom panel to show statistics of clicked feature
-  openBottomPanel();
-  info.update(layer.feature.properties);
-}
-
-// Reset map styels when mouse out hovered map feature
-//function resetHighlight(e) {
-//  geojson.resetStyle(e.target);
-//  info.update();
-//}
-
-// Zoom to clicke map feature
-//function zoomToFeature(e) {
-//    map.fitBounds(e.target.getBounds());
-//}
-
-// Add popup window on hover map feature *abandoned
-//function openPopup(e){
-//  var layer = e.target;
-//  var props = layer.feature.properties;
-//  var popup_content = "<b>Country</b>: " + props.country + "</b><br />"
-//                    + "<b>Number of Contractors</b>: " + props.sum_contractors + "</b><br />"
-//                    + "<b>Types of Services</b>: " + props.types_of_services + "</b><br />"
-//                    + "<b>Types of Clients</b>: " + props.types_of_clients + "</b><br />"
-//                    + "<b>Total Deaths</b>: " + props.deaths + "</b><br />"
-//                    + "<b>Total Injuries</b>: " + props.injuries + "</b><br />"
-//  // get current mouse position and offset 0.1 degree
-//  var popupLatLng = L.latLng(e.latlng.lat+0.1,e.latlng.lng+0.1);
-//  popup
-//    .setLatLng(popupLatLng)
-//    .setContent(popup_content)
-//    .openOn(map);   
-//}
-
-// Add event handler to each map feature
-function onEachFeature(feature, layer) {
-  layer.on({
-    mouseover: updateInfo,
-//    mouseout: resetHighlight,
-    click: highlightFeature
-  });
-}
-
-geojson = L.geoJson(seasia_countries, {
-	style: style,
-	onEachFeature: onEachFeature
-}).addTo(map);
-
-// Legend control
-var legend = L.control({position: 'topright'});
-legend.onAdd = function (map) {
-  var div = L.DomUtil.create('div', 'legend'),
-  grades = [1,100,1000,10000],
-  labels = [];
-  div.innerHTML += "<h4>Number of Contractors</h4>";
-  // loop through value intervals and generate a label with a colored square for each interval
-  for (var i = 0; i < grades.length; i++) {
-    div.innerHTML +=
-      '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-      grades[i] + '&nbsp' + (grades[i + 1] ? '&ndash;' + '&nbsp'  + grades[i + 1] + '<br>' : '+');
-    }
-  return div;
-};
-
-// Help button to start feature tour
-var helpBtn = L.control({position: 'topright'});
-helpBtn.onAdd = function (map) {
-  this._div = L.DomUtil.create('div', 'help-btn');
-  return this._div;
-};
-helpBtn.addTo(map);
-$(".help-btn").attr("id","feature-helpbtn");
-$(".help-btn").attr("title","Show Tutorial").hover(
-  function() {
-    $(this).css("cursor","pointer").css("background-color","#E4E4E4");
-  },
-  function() {
-    $(this).css("cursor","auto");
-    if($(".info").length) {$(this).css("background-color","#C1C1C1");}
-    else {$(this).css("background-color","#FFF");}
-    }
-);
-$(".help-btn").click(function(){
-  hopscotch.endTour(); // end current running tour if exists
-  hopscotch.startTour(featureTour,1)
-});
-
-// Legend button to show/hide legend
-var legendBtn = L.control({position: 'topright'});
-legendBtn.onAdd = function (map) {
-  this._div = L.DomUtil.create('div', 'legend-btn');
-  return this._div;
-};
-legendBtn.addTo(map);
-$(".legend-btn").attr("title","Show Legend").hover(
-  function() {
-    $(this).css("cursor","pointer").css("background-color","#E4E4E4");
-  },
-  function() {
-    $(this).css("cursor","auto");
-    if($(".legend").length) {$(this).css("background-color","#C1C1C1");}
-    else {$(this).css("background-color","#FFF");}
-  }
-);
-$(".legend-btn").click(function(){
-  if ($(".legend").length) {
-    $(this).attr("title","Show Legend").css("background-color","#C1C1C1");
-    map.removeControl(legend);
-  }
-  else {
-    $(this).attr("title","Hide Legend")
-    map.addControl(legend);
-  }
-});
-
-// Information button to show/hide information window
-var infoBtn = L.control({position: 'topright'});
-infoBtn.onAdd = function (map) {
-  this._div = L.DomUtil.create('div', 'info-btn');
-  return this._div;
-};
-infoBtn.addTo(map);
-$(".info-btn").attr("title","Show Information Window").hover(
-  function() {
-    $(this).css("cursor","pointer").css("background-color","#E4E4E4");
-  },
-  function() {
-    $(this).css("cursor","auto");
-    if($(".info").length) {$(this).css("background-color","#C1C1C1");}
-    else {$(this).css("background-color","#FFF");}
-  }
-);
-$(".info-btn").click(function(){
-  if ($(".info").length) {
-    $(this).attr("title","Show Information Window").css("background-color","#C1C1C1");
-    map.removeControl(info);
-  }
-  else {
-    $(this).attr("title","Hide Information Window")
-    map.addControl(info);
-  }
-});
-
-// Add id to feature tour target elements
-$(".leaflet-control-zoom-in").attr("id","feature-zoomin");
-$(".leaflet-control-zoom-out").attr("id","feature-zoomout");
-$(".leaflet-control-zoom-min").attr("id","feature-zoommin");
-$(".legend-btn").attr("id","feature-legendbtn");
-$(".info-btn").attr("id","feature-infobtn");
-</script>
+  <!-- 3rd Party JS -->
+  <script src="assets/3rdparty/jquery-1.11.1.min.js"></script>
+  <script src="assets/3rdparty/jquery-ui/jquery-ui.min.js"></script>
+  <script src="assets/3rdparty/leaflet/leaflet.js"></script>
+  <script src="assets/3rdparty/d3/d3.min.js" charset="utf-8"></script>     <!-- D3 -->
+  <script src="assets/3rdparty/d3pie.min.js"></script>                     <!-- D3 Pie -->
+  <script src="assets/3rdparty/hopscotch/hopscotch.min.js"></script>       <!-- hopscotch feature tool js -->
+  
+  <!-- Custom JS -->
+  <script type="text/javascript" src="data/seasia_countries.js"></script>  <!-- Load Southeast Asia Countries data -->
+  <script src="assets/js/L.Control.ZoomMin.js"></script>                   <!-- Leaflet Custom Controls -->
+  <script src="assets/js/chart.js"></script>
+  <script src="assets/js/panel.js"></script>
+  <script src="assets/js/map.js"></script>
+  <script src="assets/js/controls.js"></script>
+  <script src="assets/js/featuretour.js"></script>                         <!-- Website feature tour (tutorial) -->
 </body></html>
